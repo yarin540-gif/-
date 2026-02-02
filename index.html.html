@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יום אהבה עם בטי ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Assistant:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #ffe6e6;
+            color: #660033;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 15px;
+        }
+        
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #ffccd5, #fff0f3, #ffebee);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 100%;
+            width: 100%;
+            padding: 25px 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(102, 0, 51, 0.15);
+            position: relative;
+            z-index: 1;
+            border: 3px solid #ff6699;
+        }
+        
+        h1 {
+            font-family: 'Amatic SC', cursive;
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            color: #cc0066;
+            line-height: 1.2;
+        }
+        
+        .name {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.8rem;
+            color: #ff3366;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 0 #ffccdd;
+        }
+        
+        .question {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            color: #99004d;
+            padding: 0 10px;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+            min-height: 180px;
+            width: 100%;
+        }
+        
+        .btn {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.4rem;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 90%;
+            max-width: 280px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .yes-btn {
+            background-color: #ff3366;
+            color: white;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .yes-btn:active {
+            background-color: #ff0040;
+            transform: scale(0.98);
+        }
+        
+        .no-btn {
+            background-color: #f0f0f0;
+            color: #666;
+            position: absolute;
+            z-index: 5;
+        }
+        
+        .no-btn:active {
+            background-color: #e0e0e0;
+            transform: scale(0.98);
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 51, 102, 0.7);
+            font-size: 20px;
+            animation: float 6s ease-in infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .message {
+            font-size: 1.6rem;
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 20px;
+            background-color: rgba(255, 204, 221, 0.4);
+            display: none;
+            animation: fadeIn 1s ease;
+            line-height: 1.5;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            color: #9966cc;
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #996699;
+            font-style: italic;
+            padding: 0 15px;
+            line-height: 1.4;
+        }
+        
+        .touch-hint {
+            display: none;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #ff6699;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        /* אנימציה מיוחדת לכפתור שבורח */
+        @keyframes escape {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        
+        /* התאמות למסכים גדולים יותר */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+                padding: 40px 35px;
+            }
+            
+            h1 { font-size: 4rem; }
+            .name { font-size: 3.5rem; }
+            .question { font-size: 2.2rem; }
+            .btn { font-size: 2.8rem; padding: 20px 50px; max-width: 320px; }
+            .buttons-container { min-height: 220px; }
+            .message { font-size: 1.9rem; }
+        }
+        
+        /* אייפון SE וגאדג'טים קטנים */
+        @media (max-width: 375px) {
+            h1 { font-size: 2.7rem; }
+            .name { font-size: 2.3rem; }
+            .question { font-size: 1.6rem; }
+            .btn { font-size: 2.1rem; padding: 16px 35px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="hearts" id="hearts-container"></div>
+    
+    <div class="container">
+        <h1>יום אהבה שמח! ❤️</h1>
+        <div class="name">לבטי היקרה</div>
+        
+        <div class="question">האם תצאי איתי ליום אהבה?</div>
+        
+        <div class="buttons-container">
+            <button class="btn yes-btn" id="yesBtn">כן, בטח!</button>
+            <button class="btn no-btn" id="noBtn">לא</button>
+        </div>
+        
+        <div class="touch-hint" id="touchHint">נסי לגעת בכפתור "לא" 👆</div>
+        
+        <div class="instructions">(רמז: תלחצי על "כן" - הכפתור השני כנראה יתחמק ממך 😉)</div>
+        
+        <div class="message" id="message">
+            וואו, כל כך שמח! 🥳<br>
+            נקבע להיפגש ב-14 בפברואר?<br>
+            כבר מחכה לרגע הזה! 💕
+        </div>
+        
+        <div class="footer">
+            נוצר במיוחד עבורך עם אהבה אין סוף ❤️
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const message = document.getElementById('message');
+            const heartsContainer = document.getElementById('hearts-container');
+            const container = document.querySelector('.container');
+            const touchHint = document.getElementById('touchHint');
+            const buttonsContainer = document.querySelector('.buttons-container');
+            
+            let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            let escapeCount = 0;
+            
+            // הצגת רמז למסך מגע בנייד
+            if (isMobile) {
+                setTimeout(() => {
+                    touchHint.style.display = 'block';
+                    setTimeout(() => {
+                        touchHint.style.display = 'none';
+                    }, 5000);
+                }, 2000);
+            }
+            
+            // יצירת לבבות נופלים
+            function createHearts() {
+                const heartCount = isMobile ? 20 : 30;
+                
+                for (let i = 0; i < heartCount; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤';
+                    
+                    // מיקום אקראי
+                    const left = Math.random() * 100;
+                    const size = Math.random() * (isMobile ? 25 : 30) + 15;
+                    const duration = Math.random() * 10 + 5;
+                    const delay = Math.random() * 5;
+                    
+                    heart.style.left = `${left}%`;
+                    heart.style.fontSize = `${size}px`;
+                    heart.style.animationDuration = `${duration}s`;
+                    heart.style.animationDelay = `${delay}s`;
+                    
+                    heartsContainer.appendChild(heart);
+                }
+            }
+            
+            // הפונקציה שגורמת לכפתור "לא" לברוח
+            function moveNoButton() {
+                escapeCount++;
+                
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                const buttonRect = noBtn.getBoundingClientRect();
+                
+                // הגבלת התנועה לתחום הקונטיינר
+                const maxX = containerRect.width - buttonRect.width - 20;
+                const maxY = containerRect.height - buttonRect.height - 20;
+                
+                // מיקום אקראי חדש
+                let newX, newY;
+                
+                // בנייד - בורח יותר רחוק
+                if (isMobile) {
+                    newX = Math.random() * maxX;
+                    newY = Math.random() * maxY;
+                } else {
+                    // במחשב - בורח פחות רחוק
+                    newX = Math.random() * maxX * 0.8;
+                    newY = Math.random() * maxY * 0.8;
+                }
+                
+                // הנעת הכפתור למיקום החדש
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+                
+                // אנימציה של בריחה
+                noBtn.style.animation = 'escape 0.5s ease';
+                setTimeout(() => {
+                    noBtn.style.animation = '';
+                }, 500);
+                
+                // שינוי הטקסט לפי מספר הניסיונות
+                let noTexts;
+                if (escapeCount < 3) {
+                    noTexts = ['לא', 'באמת לא?', 'אולי תחשבי שוב?'];
+                } else if (escapeCount < 6) {
+                    noTexts = ['בורח לי!', 'לא תופסים אותי!', 'ניסיון יפה 😉'];
+                } else {
+                    noTexts = ['את מתקרבת!', 'כמעט!', 'חחח', 'לא מוותר?', 'נסי שוב!'];
+                }
+                
+                const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+                noBtn.textContent = randomText;
+                
+                // שינוי צבע קל לאחר הרבה ניסיונות
+                if (escapeCount > 8) {
+                    const hue = Math.random() * 60; // צהוב-כתום
+                    noBtn.style.backgroundColor = `hsl(${hue}, 70%, 85%)`;
+                }
+            }
+            
+            // טיפול בלחיצה על "כן"
+            yesBtn.addEventListener('click', function() {
+                message.style.display = 'block';
+                yesBtn.style.display = 'none';
+                noBtn.style.display = 'none';
+                document.querySelector('.instructions').style.display = 'none';
+                if (touchHint) touchHint.style.display = 'none';
+                
+                // יצירת עוד לבבות לחגיגה
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => createHearts(), i * 100);
+                }
+                
+                // הודעת הצלחה מיוחדת
+                const messages = [
+                    "מצוין! אני כל כך שמח! 🥳",
+                    "וואו! זה הולך להיות יום מדהים! 💖",
+                    "יאפיפיי! כבר מתרגש לפגוש אותך! 😍",
+                    "מהמם! נקבע להיפגש ב-14.2? 💕"
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                message.innerHTML = randomMessage + "<br>נשלח לך פרטים בקרוב! 💌";
+            });
+            
+            // טיפול בניסיון ללחוץ על "לא" בנייד (מגע)
+            if (isMobile) {
+                // מגע על הכפתור
+                noBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    moveNoButton();
+                    
+                    // רטט בנייד
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                });
+                
+                // גם אם יצליחו ללחוץ, הכפתור יזוז
+                noBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    moveNoButton();
+                });
+                
+                // מעקב אחרי אצבע שמתקרבת (למכשירים שתומכים)
+                buttonsContainer.addEventListener('touchmove', function(e) {
+                    const touch = e.touches[0];
+                    const noBtnRect = noBtn.getBoundingClientRect();
+                    
+                    // בדיקה אם האצבע קרובה לכפתור
+                    const touchX = touch.clientX;
+                    const touchY = touch.clientY;
+                    
+                    const btnCenterX = noBtnRect.left + noBtnRect.width / 2;
+                    const btnCenterY = noBtnRect.top + noBtnRect.height / 2;
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(touchX - btnCenterX, 2) + 
+                        Math.pow(touchY - btnCenterY, 2)
+                    );
+                    
+                    // אם האצבע קרובה מדי - הכפתור בורח
+                    if (distance < 100) {
+                        moveNoButton();
+                    }
+                }, {passive: true});
+            } else {
+                // במחשב - תגובה לעכבר
+                noBtn.addEventListener('mouseover', moveNoButton);
+                noBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    moveNoButton();
+                });
+            }
+            
+            // התחלת האתר עם לבבות
+            createHearts();
+            
+            // התחלת הכפתור "לא" במיקום רנדומלי
+            setTimeout(() => {
+                moveNoButton();
+            }, 300);
+            
+            // הוספת אפקטים מיוחדים אחרי הרבה ניסיונות
+            let specialEffectAdded = false;
+            const checkSpecialEffect = () => {
+                if (escapeCount > 12 && !specialEffectAdded) {
+                    specialEffectAdded = true;
+                    
+                    // הוספת אנימציה מיוחדת לכפתור ה"לא"
+                    noBtn.style.transition = 'all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+                    noBtn.style.boxShadow = '0 0 20px rgba(255, 100, 100, 0.5)';
+                    
+                    // הודעה מעודדת
+                    setTimeout(() => {
+                        const encouragement = document.createElement('div');
+                        encouragement.innerHTML = '✋ כמעט הצלחת! נסי שוב!';
+                        encouragement.style.cssText = `
+                            position: absolute;
+                            top: -30px;
+                            right: 50%;
+                            transform: translateX(50%);
+                            background: rgba(255, 200, 100, 0.9);
+                            padding: 8px 15px;
+                            border-radius: 20px;
+                            font-size: 1rem;
+                            white-space: nowrap;
+                            animation: fadeIn 0.5s;
+                            z-index: 100;
+                        `;
+                        buttonsContainer.appendChild(encouragement);
+                        
+                        setTimeout(() => {
+                            encouragement.remove();
+                        }, 2000);
+                    }, 500);
+                }
+            };
+            
+            // עדכון ספירת הניסיונות
+            const originalMoveNoButton = moveNoButton;
+            moveNoButton = function() {
+                originalMoveNoButton();
+                checkSpecialEffect();
+            };
+        });
+    </script>
+</body>
+</html>
